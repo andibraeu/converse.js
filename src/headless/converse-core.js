@@ -26,6 +26,7 @@ const $msg = strophe.default.$msg;
 const $pres = strophe.default.$pres;
 
 Backbone = Backbone.noConflict();
+BrowserStorage.patch(Backbone);
 
 dayjs.extend(advancedFormat);
 
@@ -352,6 +353,38 @@ _converse.isUniView = function () {
      */
     return _.includes(['mobile', 'fullscreen', 'embedded'], _converse.view_mode);
 };
+
+
+_converse.initStorage = async function () {
+    /* Set up Backbone.BrowserStorage and localForage for the 3 different stores.
+     */
+    _converse.localStorage = BrowserStorage.localForage.createInstance({
+        'name': 'local',
+        'driver': BrowserStorage.localForage.LOCALSTORAGE
+    });
+    _converse.indexedDB = BrowserStorage.localForage.createInstance({
+        'name': 'indexed',
+        'driver': BrowserStorage.localForage.INDEXEDDB
+    });
+    _converse.sessionStorage = BrowserStorage.localForage.createInstance({
+        'name': 'session'
+    });
+    _converse.storage = {
+        'session': _converse.sessionStorage,
+        'local': _converse.localStorage,
+        'indexed': _converse.indexedDB
+    }
+    await BrowserStorage.sessionStorageInitialized;
+    _converse.sessionStorage.setDriver('sessionStorageWrapper');
+};
+_converse.initStorage();
+
+
+_converse.BrowserStorage = function (id, storage) {
+    const s = storage ? storage : _converse.storage[_converse.config.get('storage')];
+    return new Backbone.BrowserStorage(id, s);
+}
+
 
 _converse.router = new Backbone.Router();
 

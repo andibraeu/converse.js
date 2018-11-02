@@ -56,7 +56,7 @@ converse.plugins.add('converse-minimize', {
                 this.save({
                     'minimized': this.get('minimized') || false,
                     'time_minimized': this.get('time_minimized') || dayjs(),
-                });
+                }, {'patch': true});
             },
 
             maybeShow (force) {
@@ -459,7 +459,7 @@ converse.plugins.add('converse-minimize', {
 
             initToggle () {
                 const storage = _converse.config.get('storage'),
-                      id = `converse.minchatstoggle${_converse.bare_jid}`;
+                      id = `converse.minchatstoggle-${_converse.bare_jid}`;
                 this.toggleview = new _converse.MinimizedChatsToggleView({
                     'model': new _converse.MinimizedChatsToggle({'id': id})
                 });
@@ -469,7 +469,10 @@ converse.plugins.add('converse-minimize', {
 
             toggle (ev) {
                 if (ev && ev.preventDefault) { ev.preventDefault(); }
-                this.toggleview.model.save({'collapsed': !this.toggleview.model.get('collapsed')});
+                this.toggleview.model.save(
+                    {'collapsed': !this.toggleview.model.get('collapsed')},
+                    {'patch': true}
+                );
                 u.slideToggleElement(this.el.querySelector('.minimized-chats-flyout'), 200);
             },
 
@@ -514,7 +517,7 @@ converse.plugins.add('converse-minimize', {
             },
 
             updateUnreadMessagesCounter () {
-                this.toggleview.model.save({'num_unread': _.sum(this.model.pluck('num_unread'))});
+                this.toggleview.model.save({'num_unread': _.sum(this.model.pluck('num_unread'))}, {'patch': true});
                 this.render();
             }
         });

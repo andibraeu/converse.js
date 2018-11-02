@@ -170,7 +170,8 @@
                 'name':  'The Play',
                 'nick': ' Othello'
             });
-            expect(_converse.chatboxviews.get(jid) === undefined).toBeFalsy();
+            await test_utils.waitUntil(() => _converse.api.rooms.get().length);
+            expect(_.isUndefined(_converse.chatboxviews.get(jid))).toBeFalsy();
 
             // Check that we don't auto-join if muc_respect_autojoin is false
             _converse.muc_respect_autojoin = false;
@@ -263,11 +264,13 @@
                 spyOn(_converse.bookmarks, 'sendBookmarkStanza').and.callThrough();
                 view.delegateEvents();
 
-                _converse.bookmarks.create({
-                    'jid': view.model.get('jid'),
-                    'autojoin': false,
-                    'name':  'The Play',
-                    'nick': ' Othello'
+                await new Promise((success, error) => {
+                    _converse.bookmarks.create({
+                        'jid': view.model.get('jid'),
+                        'autojoin': false,
+                        'name':  'The Play',
+                        'nick': ' Othello'
+                    }, {success, error});
                 });
                 expect(_converse.bookmarks.length).toBe(1);
                 expect(view.model.get('bookmarked')).toBeTruthy();

@@ -17,7 +17,7 @@
 
             await u.waitUntil(() => _converse.chatboxviews.get('controlbox'));
             test_utils.openControlBox();
-            const cbview = _converse.chatboxviews.get('controlbox');
+            const cbview = _converse.api.controlbox.get();
             expect(cbview.el.querySelectorAll('a.register-account').length).toBe(0);
             done();
         }));
@@ -52,7 +52,7 @@
 
             await u.waitUntil(() => _.get(_converse.chatboxviews.get('controlbox'), 'registerpanel'));
             test_utils.openControlBox();
-            const cbview = _converse.chatboxviews.get('controlbox');
+            const cbview = _converse.api.controlbox.get();
             const registerview = cbview.registerpanel;
             spyOn(registerview, 'onProviderChosen').and.callThrough();
             registerview.delegateEvents();  // We need to rebind all events otherwise our spy won't be called
@@ -88,7 +88,7 @@
 
             await u.waitUntil(() => _.get(_converse.chatboxviews.get('controlbox'), 'registerpanel'));
             test_utils.openControlBox();
-            const cbview = _converse.chatboxviews.get('controlbox');
+            const cbview = _converse.api.controlbox.get();
             cbview.el.querySelector('.toggle-register-login').click();
 
             const registerview = _converse.chatboxviews.get('controlbox').registerpanel;
@@ -144,7 +144,7 @@
 
             await u.waitUntil(() => _.get(_converse.chatboxviews.get('controlbox'), 'registerpanel'));
             test_utils.openControlBox();
-            const cbview = _converse.chatboxviews.get('controlbox');
+            const cbview = _converse.api.controlbox.get();
             cbview.el.querySelector('.toggle-register-login').click();
 
             const registerview = cbview.registerpanel;
@@ -201,7 +201,7 @@
 
             await u.waitUntil(() => _.get(_converse.chatboxviews.get('controlbox'), 'registerpanel'));
             test_utils.openControlBox();
-            const cbview = _converse.chatboxviews.get('controlbox');
+            const cbview = _converse.api.controlbox.get();
             cbview.el.querySelector('.toggle-register-login').click();
             const registerview = _converse.chatboxviews.get('controlbox').registerpanel;
             spyOn(registerview, 'onProviderChosen').and.callThrough();

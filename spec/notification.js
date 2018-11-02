@@ -71,7 +71,6 @@
                                 to: 'romeo@montague.lit',
                                 type: 'groupchat'
                             }).c('body').t(message).tree();
-
                         _converse.connection._dataRecv(test_utils.createRequest(msg));
                         await new Promise((resolve, reject) => view.once('messageInserted', resolve));
                         expect(_converse.areDesktopNotificationsEnabled).toHaveBeenCalled();

@@ -12,7 +12,6 @@ import { get, isObject, isString, propertyOf } from "lodash";
 import BrowserStorage from "backbone.browserStorage";
 import converse from "./converse-core";
 import filesize from "filesize";
-import { get, isObject, isString, propertyOf } from "lodash";
 
 const { $msg, Backbone, Strophe, dayjs, sizzle, utils, _ } = converse.env;
 const u = converse.env.utils;
@@ -1040,7 +1039,7 @@ converse.plugins.add('converse-chatboxes', {
                     return;
                 }
                 if (utils.isNewMessage(message) && this.isHidden()) {
-                    this.save({'num_unread': this.get('num_unread') + 1});
+                    this.save({'num_unread': this.get('num_unread') + 1}, {'patch': true});
                     _converse.incrementMsgCounter();
                 }
             },
@@ -1135,7 +1134,7 @@ converse.plugins.add('converse-chatboxes', {
                 if (utils.isSameBareJID(from_jid, _converse.bare_jid)) {
                     return;
                 }
-                const chatbox = this.getChatBox(from_jid);
+                const chatbox = await this.getChatBox(from_jid);
                 if (!chatbox) {
                     return;
                 }
@@ -1144,7 +1143,7 @@ converse.plugins.add('converse-chatboxes', {
                     return;
                 }
                 const attrs = await chatbox.getMessageAttributesFromStanza(stanza, stanza);
-                chatbox.messages.create(attrs);
+                await chatbox.messages.create(attrs);
             },
 
             /**
@@ -1247,7 +1246,7 @@ converse.plugins.add('converse-chatboxes', {
                 // Get chat box, but only create when the message has something to show to the user
                 const has_body = sizzle(`body, encrypted[xmlns="${Strophe.NS.OMEMO}"]`, stanza).length > 0;
                 const roster_nick = get(contact, 'attributes.nickname');
-                const chatbox = this.getChatBox(contact_jid, {'nickname': roster_nick}, has_body);
+                const chatbox = await this.getChatBox(contact_jid, {'nickname': roster_nick}, has_body);
 
                 if (chatbox) {
                     const message = await chatbox.getDuplicateMessage(stanza);
@@ -1286,7 +1285,7 @@ converse.plugins.add('converse-chatboxes', {
              * @param { object } attrs - Optional chat box atributes. If the
              *  chat box already exists, its attributes will be updated.
              */
-            getChatBox (jid, attrs={}, create) {
+            async getChatBox (jid, attrs={}, create) {
                 if (isObject(jid)) {
                     create = attrs;
                     attrs = jid;
@@ -1294,6 +1293,7 @@ converse.plugins.add('converse-chatboxes', {
                 }
                 jid = Strophe.getBareJidFromJid(jid.toLowerCase());
 
+                await _converse.api.waitUntil('chatBoxesFetched');
                 let  chatbox = this.get(Strophe.getBareJidFromJid(jid));
                 if (chatbox) {
                     chatbox.save(attrs);
@@ -1430,7 +1430,7 @@ converse.plugins.add('converse-chatboxes', {
                  * // To open a single chat, provide the JID of the contact you're chatting with in that chat:
                  * converse.plugins.add('myplugin', {
                  *     initialize: function() {
-                 *         var _converse = this._converse;
+                 *         const _converse = this._converse;
                  *         // Note, buddy@example.org must be in your contacts roster!
                  *         _converse.api.chats.open('buddy@example.com').then(chat => {
                  *             // Now you can do something with the chat model
@@ -1442,7 +1442,7 @@ converse.plugins.add('converse-chatboxes', {
                  * // To open an array of chats, provide an array of JIDs:
                  * converse.plugins.add('myplugin', {
                  *     initialize: function () {
-                 *         var _converse = this._converse;
+                 *         const _converse = this._converse;
                  *         // Note, these users must first be in your contacts roster!
                  *         _converse.api.chats.open(['buddy1@example.com', 'buddy2@example.com']).then(chats => {
                  *             // Now you can do something with the chat models
@@ -1474,7 +1474,7 @@ converse.plugins.add('converse-chatboxes', {
                 },
 
                 /**
-                 * Returns a chat model. The chat should already be open.
+                 * Retrieves a chat model. The chat should already be open.
                  *
                  * @method _converse.api.chats.get
                  * @param {String|string[]} jids - e.g. 'buddy@example.com' or ['buddy1@example.com', 'buddy2@example.com']

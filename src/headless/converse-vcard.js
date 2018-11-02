@@ -165,7 +165,6 @@ converse.plugins.add('converse-vcard', {
         }
         _converse.api.listen.on('afterResourceBinding', _converse.initVCardCollection);
 
-
         _converse.api.listen.on('statusInitialized', () => {
             const vcards = _converse.vcards;
             if (_converse.session) {

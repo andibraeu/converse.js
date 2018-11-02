@@ -45,7 +45,7 @@
 
                 spyOn(_converse.api, "trigger").and.callThrough();
                 spyOn(_converse.rosterview, 'update').and.callThrough();
-                test_utils.openControlBox();
+                await test_utils.openControlBox(_converse);
                 // Adding two contacts one with Capital initials and one with small initials of same JID (Case sensitive check)
                 _converse.roster.create({
                     jid: mock.pend_names[0].replace(/ /g,'.').toLowerCase() + '@montague.lit',
@@ -71,7 +71,8 @@
                     null, ['rosterGroupsFetched', 'chatBoxesFetched'], {},
                     async function (done, _converse) {
 
-                test_utils.createContacts(_converse, 'all').openControlBox();
+                await test_utils.createContacts(_converse, 'all')
+                await test_utils.openControlBox(_converse);
                 _converse.api.trigger('rosterContactsFetched');
 
                 const sender_jid = mock.cur_names[0].replace(/ /g,'.').toLowerCase() + '@montague.lit';
@@ -121,7 +122,7 @@
                     null, ['rosterGroupsFetched'], {},
                     function (done, _converse) {
 
-                test_utils.openControlBox();
+                test_utils.openControlBox(_converse);
                 var view = _converse.xmppstatusview;
                 expect(u.hasClass('online', view.el.querySelector('.xmpp-status span:first-child'))).toBe(true);
                 expect(view.el.querySelector('.xmpp-status span.online').textContent.trim()).toBe('I am online');
@@ -133,8 +134,7 @@
                     null, ['rosterGroupsFetched'], {},
                     async function (done, _converse) {
 
-                test_utils.openControlBox();
-
+                await test_utils.openControlBox(_converse);
                 var cbview = _converse.chatboxviews.get('controlbox');
                 cbview.el.querySelector('.change-status').click()
                 var modal = _converse.xmppstatusview.status_modal;
@@ -162,8 +162,7 @@
                     null, ['rosterGroupsFetched'], {},
                     async function (done, _converse) {
 
-                test_utils.openControlBox();
-
+                await test_utils.openControlBox(_converse);
                 const cbview = _converse.chatboxviews.get('controlbox');
                 cbview.el.querySelector('.change-status').click()
                 const modal = _converse.xmppstatusview.status_modal;
@@ -196,7 +195,8 @@
                 null, ['rosterGroupsFetched'], {},
                 async function (done, _converse) {
 
-            test_utils.createContacts(_converse, 'all').openControlBox();
+            await test_utils.createContacts(_converse, 'all')
+            await test_utils.openControlBox(_converse);
 
             const panel = _converse.chatboxviews.get('controlbox').contactspanel;
             const cbview = _converse.chatboxviews.get('controlbox');

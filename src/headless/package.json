@@ -23,12 +23,18 @@
   "gitHead": "9641dcdc820e029b05930479c242d2b707bbe8e2",
   "devDependencies": {
     "backbone": "1.4",
-    "backbone.browserStorage": "0.0.5",
-    "filesize": "^4.1.2",
+    "backbone.browserStorage": "conversejs/backbone.browserStorage#4fcb17861023becb3b25dec7b3238253873c8cd6",
+    "es6-promise": "^4.1.0",
+    "filesize": "^3.6.1",
     "jed": "1.1.1",
-    "lodash": "^4.17.15",
-    "pluggable.js": "2.0.1",
-    "strophe.js": "1.3.4",
-    "twemoji": "^12.1.2"
+    "localforage": "^1.7.3",
+    "lodash": "^4.17.11",
+    "moment": "~> 2.19.3 ",
+    "pluggable.js": "2.0.0",
+    "strophe.js": "1.3.2",
+    "strophejs-plugin-ping": "0.0.3",
+    "strophejs-plugin-rsm": "0.0.2",
+    "twemoji": "^11.0.1",
+    "urijs": "^1.19.1"
   }
 }

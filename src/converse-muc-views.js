@@ -889,7 +889,6 @@ converse.plugins.add('converse-muc-views', {
                  */
                 if (u.isPersistableModel(this.model)) {
                     this.model.clearUnreadMsgCounter();
-                    this.model.save();
                 }
                 this.scrollDown();
             },
@@ -929,13 +928,13 @@ converse.plugins.add('converse-muc-views', {
              * @private
              * @method _converse.ChatRoomView#close
              */
-            close () {
+            async close () {
                 this.hide();
                 if (Backbone.history.getFragment() === "converse/room?jid="+this.model.get('jid')) {
                     _converse.router.navigate('');
                 }
-                this.model.leave();
-                _converse.ChatBoxView.prototype.close.apply(this, arguments);
+                await this.model.leave();
+                return _converse.ChatBoxView.prototype.close.apply(this, arguments);
             },
 
             updateOccupantsToggle () {
@@ -2203,7 +2202,7 @@ converse.plugins.add('converse-muc-views', {
                  * @method _converse.api.roomviews.close
                  * @param {(String[]|String)} jids The JID or array of JIDs of the chatroom(s)
                  */
-                'close' (jids) {
+                close (jids) {
                     let views;
                     if (jids === undefined) {
                         views = _converse.chatboxviews;

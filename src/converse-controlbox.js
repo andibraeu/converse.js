@@ -290,13 +290,23 @@ converse.plugins.add('converse-controlbox', {
                 )
             },
 
-            close (ev) {
+            async close (ev) {
                 if (ev && ev.preventDefault) { ev.preventDefault(); }
+                if (ev.name === 'closeAllChatBoxes' &&
+                        (_converse.disconnection_cause !== _converse.LOGOUT ||
+                         _converse.show_controlbox_by_default)) {
+                    return;
+                }
                 if (_converse.sticky_controlbox) {
                     return;
                 }
                 if (_converse.connection.connected && !_converse.connection.disconnecting) {
-                    this.model.save({'closed': true});
+                    await new Promise((resolve, reject) => {
+                        return this.model.save(
+                            {'closed': true},
+                            {'success': resolve, 'error': reject}
+                        );
+                    });
                 } else {
                     this.model.trigger('hide');
                 }
@@ -589,7 +599,7 @@ converse.plugins.add('converse-controlbox', {
 
         _converse.api.listen.on('chatBoxesFetched', () => {
             const controlbox = _converse.chatboxes.get('controlbox') || addControlBox();
-            controlbox.save({connected:true});
+            controlbox.save({'connected': true}, {'patch': true});
         });
 
         const disconnect =  function () {
