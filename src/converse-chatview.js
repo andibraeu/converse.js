@@ -204,10 +204,8 @@ converse.plugins.add('converse-chatview', {
                 if (result === true) {
                     this.modal.hide();
                     this.model.contact.removeFromRoster(
-                        (iq) => {
-                            this.model.contact.destroy();
-                        },
-                        (err) => {
+                        iq => this.model.contact.destroy(),
+                        err => {
                             _converse.log(err, Strophe.LogLevel.ERROR);
                             _converse.api.alert.show(
                                 Strophe.LogLevel.ERROR,

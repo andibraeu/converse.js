@@ -290,8 +290,15 @@ u.ancestor = function (el, selector) {
     return parent;
 }
 
+/**
+ * Return the element's siblings until one matches the selector.
+ * @private
+ * @method u#nextUntil
+ * @param { HTMLElement } el
+ * @param { String } selector
+ * @param { Boolean } include_self
+ */
 u.nextUntil = function (el, selector, include_self=false) {
-    /* Return the element's siblings until one matches the selector. */
     const matches = [];
     let sibling_el = el.nextElementSibling;
     while (sibling_el !== null && !sibling_el.matches(selector)) {
