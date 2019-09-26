@@ -12,6 +12,7 @@ import { get, isObject, isString, propertyOf } from "lodash";
 import BrowserStorage from "backbone.browserStorage";
 import converse from "./converse-core";
 import filesize from "filesize";
+import { get, isObject, isString, propertyOf } from "lodash";
 
 const { $msg, Backbone, Strophe, dayjs, sizzle, utils, _ } = converse.env;
 const u = converse.env.utils;
