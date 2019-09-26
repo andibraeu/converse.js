@@ -11,7 +11,10 @@ import "./utils/form";
 import { get, isObject, isString, propertyOf } from "lodash";
 import BrowserStorage from "backbone.browserStorage";
 import converse from "./converse-core";
+import { createRegistry } from "jxt";
 import filesize from "filesize";
+import jxt_xmpp from "jxt-xmpp";
+import jxt_xmpp_types from "jxt-xmpp-types";
 
 const { $msg, Backbone, Strophe, dayjs, sizzle, utils, _ } = converse.env;
 const u = converse.env.utils;
@@ -30,8 +33,11 @@ converse.plugins.add('converse-chatboxes', {
         /* The initialize function gets called as soon as the plugin is
          * loaded by converse.js's plugin machinery.
          */
-        const { _converse } = this,
-              { __ } = _converse;
+        const { _converse } = this;
+        const { __ } = _converse;
+        const jxt = createRegistry();
+        jxt.use(jxt_xmpp_types);
+        jxt.use(jxt_xmpp);
 
         // Configuration values for this plugin
         // ====================================
@@ -951,6 +957,9 @@ converse.plugins.add('converse-chatboxes', {
              *  message stanza, if it was contained, otherwise it's the message stanza itself.
              */
             async getMessageAttributesFromStanza (stanza, original_stanza) {
+                debugger
+                const data = jxt.parse(Strophe.serialize(stanza));
+
                 const spoiler = sizzle(`spoiler[xmlns="${Strophe.NS.SPOILER}"]`, original_stanza).pop();
                 const delay = sizzle(`delay[xmlns="${Strophe.NS.DELAY}"]`, original_stanza).pop();
                 const text = this.getMessageBody(stanza) || undefined;
