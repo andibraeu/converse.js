@@ -7,21 +7,21 @@ $mobile_portrait_length: 480px !default;
     --green: #3AA569;
     --redder-orange: #E77051;
     --orange: #E7A151;
-    --light-blue: #578EA9;
+    --light-blue: #df3a6c;
 
     --chat-status-online: var(--green);
     --chat-status-busy: var(--redder-orange);
     --chat-status-away: var(--orange);
 
-    --brand-heading-color: #387592; // $blue
+    --brand-heading-color: #c85175; // $blue
 
     --completion-light-color: #FFB9A7; // $lightest-red
     --completion-normal-color: var(--redder-orange);
     --completion-dark-color: #D24E2B; // $dark-red
 
     --link-color: var(--light-blue);
-    --link-color-darken-20-percent: #345566; // darken($light-blue, 20%)
-    --link-color-lighten-10-percent: #79a5ba; // lighten($light-blue, 10%)
+    --link-color-darken-20-percent: #9a1940; // darken($light-blue, 20%)
+    --link-color-lighten-10-percent: #e6668d; // lighten($light-blue, 10%)
     --dark-link-color: #206485; // $dark-blue
     --global-background-color: #397491; // dark blue
 
@@ -84,7 +84,7 @@ $mobile_portrait_length: 480px !default;
 
     --controlbox-width: 250px;
     --controlbox-head-color: var(--light-blue);
-    --controlbox-head-color-lighten-45-percent: #eff4f7; // lighten($light-blue, 45%)
+    --controlbox-head-color-lighten-45-percent: #f1a8be; // lighten($light-blue, 45%)
     --controlbox-pane-background-color: white;
     --controlbox-heading-color: inherit;
     --controlbox-heading-font-weight: bold;
@@ -176,7 +176,7 @@ $mobile_portrait_length: 480px !default;
     --list-toggle-color: #818479; // $gray-color
     --list-toggle-hover-color: #585B51; // $dark-gray-color
     --list-toggle-font-weight: normal;
-    --list-item-action-color: #e3eef3; // lighten($lightest-blue, 25%)
+    --list-item-action-color: #f1a8be; // lighten($lightest-blue, 25%)
     --list-item-link-color: inherit;
     --list-item-link-hover-color: var(--dark-link-color);
     --list-item-open-color: var(--controlbox-head-color);
